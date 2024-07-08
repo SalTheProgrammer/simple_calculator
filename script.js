@@ -31,6 +31,7 @@ function divide (a,b) {
 // event listeners to buttons and display function
 var elNum = document.getElementsByClassName("num");
 var elOp = document.getElementsByClassName("operation");
+var eqButton = document.getElementsByClassName("equal");
 var dispBox = document.getElementById("text-display");
 
 var display = function() {
@@ -47,6 +48,9 @@ for (var i = 0; i < elNum.length; i++) {
 for (var i = 0; i < elOp.length; i++) {
     elOp[i].addEventListener('click', operPressed, false);
 }
+
+//call equalPressed if equal is pressed
+eqButton[0].addEventListener('click', equalPressed, false);
 
 // what happens when numbers or operators are pressed
 function numPressed () {
@@ -67,6 +71,7 @@ function numPressed () {
     } 
 }
 
+//what happens if one of the operation is pressed
 function operPressed () {
     oper = this.getAttribute("value");
     firstNum = Number(firstNum);
@@ -83,6 +88,7 @@ function operPressed () {
         if (secondNumArray.length != 0){
             dispBox.innerHTML = operate (firstNum, secondNum, oper1);
         }
+        opPressCount++;
     } else if (opPressCount > 0 ) { //|| oper == "="
         if (secondNumArray.length != 0) {
             oper2 = oper;
@@ -91,24 +97,37 @@ function operPressed () {
             oper1 = oper2;
             secondNumArray = []; //initiate secondNumArray;
         }
+        opPressCount++;
     }
-    opPressCount++;
 }
 
 function operate(a, b, op) {
     var result = 0;
     if (op == "-") {
         result = a - b;
-        //dispBox.innerHTML = result;
     } else if (op == "+") {
         result = a + b;
-        //dispBox.innerHTML = result;
     } else if (op == "*") {
         result = a * b;
-        //dispBox.innerHTML = result;
     } else if (op == "/") {
         result = a / b;
-        //dispBox.innerHTML = result;
+    } else if (op == "^") {
+        result = a ** b;
     } 
     return result;
+}
+
+//what happens if equal button is pressed
+function equalPressed () {
+    firstNum = Number(firstNum);
+    secondNum = Number(secondNum);
+    if (secondNumArray.length != 0) {
+        //if (oper2 == "") {
+            firstNum = operate (firstNum, secondNum, oper); 
+        //} else {
+        //    firstNum = operate (firstNum, secondNum, oper1); 
+        //}
+        dispBox.innerHTML = firstNum;
+        secondNumArray = []; //initiate secondNumArray;
+    }
 }
